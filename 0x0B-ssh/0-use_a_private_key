@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-# connects to a server using ssh
-ssh ubuntu@54.197.117.117 -i ~/.ssh/school
+# This script creates an RSA key pair
+if [ ! -d ~/.ssh ]; then
+	    mkdir ~/.ssh
+fi
+ssh-keygen -f ~/.ssh/school -b 4096 -N betty
+
