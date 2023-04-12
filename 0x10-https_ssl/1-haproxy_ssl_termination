@@ -32,53 +32,22 @@ defaults
 	errorfile 502 /etc/haproxy/errors/502.http
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
-listen otungp
-bind :80
-mode http
-server 124330-web-01 54.164.148.46:80 check
-server 124330-web-02 107.23.95.92:80 check
 
+frontend ssl_443
+         bind *:443 ssl crt /etc/haproxy/cert/cert.pem
+         reqadd X-Forwarded-Proto:\ https
+         default_backend web_servers
 
+frontend sammykingx.tech
+        bind 0:80
+        reqadd X-Forwarded-Proto:\ http
+        redirect scheme https code 301 if !{ ssl_fc }
+        default_backend web_servers
 
-#my config
-frontend web-frontend
-        mode tcp
-        bind *:80
-        default_backend web-backend
-
-backend web-backend
+backend web_servers
+        balance roundrobin
+        redirect scheme https if !{ ssl_fc }
         balance roundrobin
         server 124330-web-01 54.164.148.46:80 check
-server 124330-web-02 107.23.95.92:80 check
-        server 124330-web-02 3.84.158.134:80 check
-
-
-
-
-#my config
-frontend web-frontend
-        mode tcp
-        bind *:80
-        default_backend web-backend
-
-backend web-backend
-        balance roundrobin
-        server 124330-web-01 54.164.148.46:80 check
-server 124330-web-02 107.23.95.92:80 check
-        server 124330-web-02 3.84.158.134:80 check
-
-
-
-
-#my config
-frontend web-frontend
-        mode tcp
-        bind *:80
-        default_backend web-backend
-
-backend web-backend
-        balance roundrobin
-        server 124330-web-01 54.164.148.46:80 check
-server 124330-web-02 107.23.95.92:80 check
         server 124330-web-02 3.84.158.134:80 check
 
