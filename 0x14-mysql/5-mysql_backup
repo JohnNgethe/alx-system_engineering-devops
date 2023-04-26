@@ -1,17 +1,4 @@
-#!/bin/bash
-
-# Get the current date
-DATE=$(date +%d-%m-%Y)
-
-# Set the MySQL root password
-PASSWORD="$1"
-
-# Dump all MySQL databases to backup.sql file
-mysqldump -u root -p$PASSWORD --all-databases > backup.sql
-
-# Compress the backup.sql file to a tar.gz archive
-tar -czvf $DATE.tar.gz backup.sql
-
-# Remove the backup.sql file
-rm backup.sql
-
+#!/usr/bin/env bash
+# Export all databases to backup.sql //mysqldump -u [username] -p [database name] > [database name].sql
+mysqldump -u root -p"$1" --all-databases > backup.sql
+tar -czvf "$(date +%d-%m-%Y).tar.gz" backup.sql
