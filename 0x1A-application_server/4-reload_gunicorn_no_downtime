@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script will gracefully reload Gunicorn
+sudo systemctl status airbnb | grep -oE 'Main PID: [0-9]+' | cut -d ' ' -f3 | xargs kill -HUP
